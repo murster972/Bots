@@ -1,0 +1,9 @@
+The module PyUserImport wasn't working correctly so this is a custom version of the module, the module does not belong to myself, it belongs to https://github.com/SavinaRoja/PyUserInput
+
+An error was occur on in the x11.py file. The stop method in PyMouseEvent was causing a infinite loop when the following code was called:
+
+with display_manager(self.display2) as d:
+            d.ungrab_pointer(X.CurrentTime)
+            d.record_disable_context(self.ctx)
+
+Not entirety sure why it was causing this loop, but taking the code out fixed it.

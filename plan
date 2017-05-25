@@ -1,0 +1,36 @@
+Server:
+    Three main threads:
+        1. Presents menu to user, allowing them to view all clients, send commands etc.
+        2. Listens for clients and adds to collection
+    Each client added is given another thread that listens and checks they're still active
+
+    Menu - Numeric:
+        1. show clients
+            -client_ID/s or ALL
+        2. remove clients
+            -client IDs, can be blank to return to menu
+        3. send command
+            -command input
+            -client IDs
+        4. keylogger
+            -status
+            -start/stop
+            -get results
+        5. webcam
+            -status
+            -start/stop record
+            -take picture
+        6. mouse
+            -move mouse to (x, y)
+            -disable mouse
+        7. keyboard
+            -status
+            -type with keyboard
+            -control keyboard
+            -disable keyboard
+        8. exit
+
+Clients
+    Three main threads:
+        1. Connects to and Listens for commands from server
+        3. Checks server is still active
