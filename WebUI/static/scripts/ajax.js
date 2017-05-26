@@ -12,8 +12,10 @@ $(function(){
             data: JSON.stringify(updata),
             type: "POST",
             success: function(resp){
-                //TODO: change to let user know if cmd uploaded or not
-                console.log(resp);
+                console.log(resp)
+                r = eval(resp);
+                html = r[0] == -1 ? "Command upload unsuccessful: " + r[1] : "Command upload successful"
+                $("#sentCmdStatus").text(html);
             }
         })
     })

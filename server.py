@@ -69,7 +69,10 @@ class Server:
                 if results:
                     for cmd in results:
                         print(["COMMAND", cmd])
-                        self.clients[cmd[1]][0].send(str(["COMMAND", cmd]).encode("utf-8"))
+                        try:
+                            self.clients[cmd[1]][0].send(str(["COMMAND", cmd]).encode("utf-8"))
+                        except KeyError:
+                            continue
                         cursor.execute("update ClientCommand set Sent = 1 where ClientID = '{}' and CommandID = '{}'".format(cmd[1], cmd[0]))
                         db.commit()
                 #db.close()
