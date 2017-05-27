@@ -2,11 +2,33 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>
-        
-        </title>
+        <title>Bots</title>
+        <link rel="stylesheet" href="stylesheets/main.css">
+        <link rel="stylesheet" href="stylesheets/responsive.css">
     </head>
     <body>
-
+        <div id="wrapper">
+            <div id="title">
+                <h1 id="titleTxt" class="titleTxtStyle">Bots Server</h1>
+                <!--<h2 id="titleArrow" class="titleTxtStyle">🡳<h2>-->
+            </div>
+            <div id="main_container">
+                <div id="ServerInfoContainer">
+                    <!--<h2 class="ContainerTitle" id="ServerInfoTitle">Server Info</h2>-->
+                    <div id="ServerInfoContentWrapper">
+                        <div id="ServerInfo" class="ServerInfoItem"></div>
+                        <div id="ServerResources" class="ServerInfoItem"></div>
+                    </div>
+                </div>
+                <div id="CommandInputContainer">
+                    <!--<h2 id="CommandInputTitle" class="ContainerTitle">Command Input</h2>-->
+                    <div id="CommandInputs">
+                        <input id="CommandInpt" class="CommandInput" type="text" placeholder="Command"></input>
+                        <input id="ClientsInpt" class="CommandInput" type="text" placeholder="Clients"></input>
+                    </div>
+                    <input id="CommandSendButon" type="button" value="Send Command"></input>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

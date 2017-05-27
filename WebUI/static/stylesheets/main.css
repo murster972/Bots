@@ -1,0 +1,155 @@
+@font-face {
+    font-family: Pacifico;
+    src: url("Pacifico.ttf");
+}
+
+@font-face {
+    font-family: FiraSans-Regular;
+    src: url("FiraSans-Regular.ttf");
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-color: #502D90;
+}
+
+#wrapper{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+#title{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.titleTxtStyle{
+    font-family: Pacifico;
+    font-size: 70px;
+    color: #fff;
+}
+
+#main_container{
+    width: 900px;
+    height: 800px;
+    background-color: #514E80;
+    margin: 0 auto;
+    margin-bottom: 100px;
+    box-shadow: 0px 0px 10px #522D92;
+}
+
+#ServerInfoContainer{
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+}
+
+.ContainerTitle{
+    width: 100%;
+    padding: 12px;
+    padding-left: 0;
+    padding-right: 0;
+    font-family: FiraSans-Regular;
+    color: #fff;
+    text-align: center;
+    background-color: #000;
+}
+
+#ServerInfoContentWrapper{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    background-color: #3B3649;
+}
+
+.ServerInfoItem{
+    width: 50%;
+    height: 200px;
+}
+
+#ServerInfo{
+
+}
+
+#CommandInputContainer{
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: calc(70px / 3 - 10px);
+    background: #3B3649;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*#CommandInputTitle{
+    background-color: inherit;
+    color: #4A3053;
+}*/
+
+#CommandInputs{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.CommandInput{
+    width: 410px;
+    height: 30px;
+    background-color: #fff;
+    outline: 0;
+    border: 0;
+    font-family: FiraSans-Regular;
+    font-size: 16px;
+    color: #000;
+    padding: 10px;
+    text-align: center;
+}
+
+#CommandInpt{
+    margin-right: calc((70px / 3) / 2);
+}
+
+#CommandSendButon{
+    width: calc(100% - (70px / 3) - 4px);
+    height: 50px;
+    margin-top: calc(70px / 3 / 2);
+    outline: 0;
+    border: 2px solid #fff;
+    background-color: #3B3649;
+    font-family: FiraSans-Regular;
+    font-size: 16px;
+    color: #fff;
+    transition: 0.2s all;
+    cursor: pointer;
+}
+
+#CommandSendButon:hover{
+    background-color: #000;
+    border-color: #000;
+    color: #3B3649;
+}
+
+#CommandSendButon::-moz-focus-inner{
+    border: 0;
+}
+
+#CommandSendButon:focus{
+    outline: 0;
+}

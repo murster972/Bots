@@ -3,22 +3,32 @@
     <head>
         <meta charset="utf-8">
         <title>Bots</title>
-        <script type="text/javascript" src="../static/scripts/jquery-3.2.1.min.js"></script>
-    	<script type="text/javascript" src="../static/scripts/ajax.js"></script>
+        <link rel="stylesheet" href="../stylesheets/main.css">
+        <link rel="stylesheet" href="../stylesheets/responsive.css">
     </head>
     <body>
-        <h1>Bots</h1>
-        <h2>Server Info</h2>
-        <h3 id="active">Active Servers: </h3>
-        <table id="serverInfo"></table>
-        <h2>Send Command</h2>
-        <input type="text" placeholder="Command" id="command"/>
-        <input type="text" placeholder="Clients" id="clientIDs"/>
-        <button id="sendCmd">Send Command</button>
-        <h3 id="sentCmdStatus"></h3>
-        <h2>Clients</h2>
-        <table id="clientInfo"></table>
-        <h2>Command Info</h2>
-        <table id="CommandInfo"></table>
+        <div id="wrapper">
+            <div id="title">
+                <h1 id="titleTxt" class="titleTxtStyle">Bots Server</h1>
+                <!--<h2 id="titleArrow" class="titleTxtStyle">🡳<h2>-->
+            </div>
+            <div id="main_container">
+                <div id="ServerInfoContainer">
+                    <!--<h2 class="ContainerTitle" id="ServerInfoTitle">Server Info</h2>-->
+                    <div id="ServerInfoContentWrapper">
+                        <div id="ServerInfo" class="ServerInfoItem"></div>
+                        <div id="ServerResources" class="ServerInfoItem"></div>
+                    </div>
+                </div>
+                <div id="CommandInputContainer">
+                    <!--<h2 id="CommandInputTitle" class="ContainerTitle">Command Input</h2>-->
+                    <div id="CommandInputs">
+                        <input id="CommandInpt" class="CommandInput" type="text" placeholder="Command"></input>
+                        <input id="ClientsInpt" class="CommandInput" type="text" placeholder="Clients"></input>
+                    </div>
+                    <input id="CommandSendButon" type="button" value="Send Command"></input>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
