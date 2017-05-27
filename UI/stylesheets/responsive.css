@@ -1,4 +1,4 @@
-@media screen and (max-width: 890px){
+@media screen and (max-width: 690px){
     #title{
         height: 100%;
         text-align: center;
@@ -14,36 +14,6 @@
     }
 
     .ServerInfoItem{
-        width: 100%;
-    }
-
-    #CommandInputContainer{
-        padding-bottom: 0px;
-    }
-
-    #CommandInputs{
-        flex-direction: column;
-    }
-
-    .CommandInput{
         width: calc(100% - 20px);
-        margin: 0 !important;
-    }
-
-    #CommandInpt{
-        border-bottom: 1px #E8E0C7 solid;
-    }
-
-    #CommandSendButon{
-        background-color: #000;
-        color: #fff;
-        width: 100%;
-        margin-top: 0;
-        border: 0;
-    }
-
-    #CommandSendButon:hover{
-        background-color: #000;
-        color: #fff;
     }
 }
