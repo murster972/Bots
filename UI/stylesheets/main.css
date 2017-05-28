@@ -39,7 +39,7 @@ body{
 }
 
 #main_container{
-    width: 700px;
+    width: 800px;
     height: 800px;
     background-color: #514E80;
     margin: 0 auto;
@@ -50,7 +50,7 @@ body{
 #ServerInfoContainer{
     width: 100%;
     height: auto;
-    background-color: #fff;
+    background-color: red;
 }
 
 .ContainerTitle{
@@ -68,11 +68,11 @@ body{
     width: 100%;
     height: auto;
     display: flex;
-    background-color: #3B3649;
+    background-color: #fff;
 }
 
 .ServerInfoItem{
-    width: calc(50% - 20px);
+    width: calc(50% - 10px);
     padding: 10px;
     height: auto;
 }
@@ -80,21 +80,28 @@ body{
 #ServerInfo{
     display: flex;
     flex-direction: column;
+    padding-right: 5px;
+}
+
+#ServerResources{
+    padding-left: 5px;
+}
+
+.ServerInfoWrapper{
+    width: 100%;
+    background-color: red;
+    display: flex;
 }
 
 .ServerInfoText{
-    color: #fff;
+    padding: 5px;
     font-family: FiraSans-Regular;
 }
 
-#ServerInfoStatus{
-    width: 100%;
-    padding: 5px;
-    padding-left: 0;
-    padding-right: 0;
-    background: #000;
-    color: #3B3649;
-    text-align: center;
+.ServerInfoText.Title{
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: green;
 }
 
 .ServerResourceItem{
@@ -108,7 +115,7 @@ body{
     width: 100%;
     background: inherit;
     font-family: FiraSans-Regular;
-    color: #fff;
+    color: #515A7B;
     text-align: left;
 }
 
@@ -129,6 +136,15 @@ body{
     width: 35%;
 }
 
+#CommandInputContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: ccenter;
+    background-color: #fff;
+    padding-bottom: 16px;
+}
+
 /*#CommandInputTitle{
     background-color: inherit;
     color: #4A3053;
@@ -144,7 +160,7 @@ body{
 }
 
 .CommandInput{
-    width: calc(100% - 20px);
+    width: calc(100% - 46px);
     height: 30px;
     background-color: #fff;
     outline: 0;
@@ -157,26 +173,27 @@ body{
 }
 
 #CommandInpt{
-    border-bottom: 1px #E8E0C7 solid;
+    border-bottom: 3px #E8E0C7 solid;
 }
 
 #CommandSendButon{
-    width: 100%;
+    width: calc(100% - 26px);
     height: 50px;
     outline: 0;
     border: 0;
-    background-color: #000;
+    background-color: #fff;
+    border: 3px #000 solid;
     font-family: FiraSans-Regular;
     font-size: 16px;
-    color: #fff;
+    color: #000;
+    font-weight: 600;
     transition: 0.2s all;
     cursor: pointer;
 }
 
 #CommandSendButon:hover{
     background-color: #000;
-    border-color: #000;
-    color: #3B3649;
+    color: #fff;
 }
 
 #CommandSendButon::-moz-focus-inner{
