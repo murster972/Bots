@@ -16,4 +16,9 @@
     .ServerInfoItem{
         width: calc(100% - 20px);
     }
+
+    #ServerResources{
+        padding-left: 10px;
+        padding-top: 0;
+    }
 }

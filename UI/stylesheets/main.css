@@ -88,20 +88,54 @@ body{
 }
 
 .ServerInfoWrapper{
-    width: 100%;
-    background-color: red;
+    width: calc(100% - 6px);
+    background-color: #fff;
+    border: 3px #372A4D solid;
     display: flex;
+    margin-bottom: 10px;
+}
+
+.ServerInfoWrapper.bottom{
+    margin-bottom: 0;
+}
+
+.ServerInfoWrapper.status.online{
+    border-color: #2ECC71;
+}
+
+.ServerInfoWrapper.status.offline{
+    border-color: #D14841;
 }
 
 .ServerInfoText{
     padding: 5px;
     font-family: FiraSans-Regular;
+    color: #372A4D;
+}
+
+.ServerInfoText.status.online{
+    color: #2ECC71;
+}
+
+.ServerInfoText.status.offline{
+    color: #D14841;
 }
 
 .ServerInfoText.Title{
     padding-left: 10px;
     padding-right: 10px;
-    background-color: green;
+    background-color: #372A4D;
+    color: #fff;
+}
+
+.ServerInfoText.Title.status.online{
+    background-color: #2ECC71;
+    color: #fff;
+}
+
+.ServerInfoText.Title.status.offline{
+    background-color: #D14841;
+    color: #fff;
 }
 
 .ServerResourceItem{
@@ -115,7 +149,7 @@ body{
     width: 100%;
     background: inherit;
     font-family: FiraSans-Regular;
-    color: #515A7B;
+    color: #372A4D;
     text-align: left;
 }
 
@@ -128,7 +162,7 @@ body{
 .ResourceBar{
     width: 70%;
     height: 100%;
-    background-color: #515A7B;
+    background-color: #372A4D;
     transition: .2s all;
 }
 
@@ -182,17 +216,17 @@ body{
     outline: 0;
     border: 0;
     background-color: #fff;
-    border: 3px #000 solid;
+    border: 3px #372A4D solid;
     font-family: FiraSans-Regular;
     font-size: 16px;
-    color: #000;
+    color: #372A4D;
     font-weight: 600;
     transition: 0.2s all;
     cursor: pointer;
 }
 
 #CommandSendButon:hover{
-    background-color: #000;
+    background-color: #372A4D;
     color: #fff;
 }
 
