@@ -14,46 +14,53 @@
                 <!--<h2 id="titleArrow" class="titleTxtStyle">🡳<h2>-->
             </div>
             <div id="main_container">
-                <div id="ServerInfoContainer">
-                    <!--<h2 class="ContainerTitle" id="ServerInfoTitle">Server Info</h2>-->
-                    <div id="ServerInfoContentWrapper">
-                        <div id="ServerInfo" class="ServerInfoItem">
-                            <div class="ServerInfoWrapper status online">
-                                <h2 class="ServerInfoText Title status online">Status</h2>
-                                <h2 class="ServerInfoText status online">ONLINE</h2>
-                            </div>
-                            <div class="ServerInfoWrapper">
-                                <h2 class="ServerInfoText Title">IP Addr</h2>
-                                <h2 class="ServerInfoText">192.168.100.200</h2>
-                            </div>
-                            <div class="ServerInfoWrapper bottom">
-                                <h2 class="ServerInfoText Title">Port No</h2>
-                                <h2 class="ServerInfoText">9999</h2>
-                            </div>
-                        </div>
-                        <div id="ServerResources" class="ServerInfoItem">
-                            <div class="ServerResourceItem">
-                                <h2 class="ResourceName">RAM - 70%</h2>
-                                <div class="ResourceBarContainer">
-                                    <div id="RAMResourceBar" class="ResourceBar"></div>
+                <div class="ItemContainerWrapper">
+                    <div id="ServerInfoContainer" class="ItemContainer">
+                        <!--<h2 class="ContainerTitle" id="ServerInfoTitle">Server Info</h2>-->
+                        <div id="ServerInfoContentWrapper" class="ItemContainer">
+                            <div id="ServerInfo" class="ServerInfoItem">
+                                <div class="ServerInfoWrapper status online">
+                                    <h2 class="ServerInfoText Title status online">Status</h2>
+                                    <h2 class="ServerInfoText status online">ONLINE</h2>
+                                </div>
+                                <div class="ServerInfoWrapper">
+                                    <h2 class="ServerInfoText Title">IP Addr</h2>
+                                    <h2 class="ServerInfoText">192.168.100.200</h2>
+                                </div>
+                                <div class="ServerInfoWrapper bottom">
+                                    <h2 class="ServerInfoText Title">Port No</h2>
+                                    <h2 class="ServerInfoText">9999</h2>
                                 </div>
                             </div>
-                            <div class="ServerResourceItem">
-                                <h2 class="ResourceName">CPU - 35%</h2>
-                                <div class="ResourceBarContainer">
-                                    <div id="CPUResourceBar" class="ResourceBar"></div>
+                            <div id="ServerResources" class="ServerInfoItem">
+                                <div class="ServerResourceItem">
+                                    <h2 class="ResourceName">RAM - 70%</h2>
+                                    <div class="ResourceBarContainer">
+                                        <div id="RAMResourceBar" class="ResourceBar"></div>
+                                    </div>
+                                </div>
+                                <div class="ServerResourceItem">
+                                    <h2 class="ResourceName">CPU - 35%</h2>
+                                    <div class="ResourceBarContainer">
+                                        <div id="CPUResourceBar" class="ResourceBar"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="CommandInputContainer">
-                    <!--<h2 id="CommandInputTitle" class="ContainerTitle">Command Input</h2>-->
-                    <div id="CommandInputs">
-                        <input id="CommandInpt" class="CommandInput" type="text" placeholder="Command"></input>
-                        <input id="ClientsInpt" class="CommandInput" type="text" placeholder="Clients"></input>
+                <div class="ItemContainerWrapper">
+                    <div id="CommandInputContainer" class="ItemContainer">
+                        <!--<h2 id="CommandInputTitle" class="ContainerTitle">Command Input</h2>-->
+                        <div id="CommandInputs">
+                            <input id="CommandInpt" class="CommandInput" type="text" placeholder="Command"></input>
+                            <input id="ClientsInpt" class="CommandInput" type="text" placeholder="Clients"></input>
+                        </div>
+                        <input id="CommandSendButon" type="button" value="Send Command"></input>
                     </div>
-                    <input id="CommandSendButon" type="button" value="Send Command"></input>
+                </div>
+                <div id="ClientInfoContainer">
+
                 </div>
             </div>
         </div>

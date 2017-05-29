@@ -17,13 +17,17 @@
         width: calc(100% - 20px);
     }
 
+    .ItemContainer{
+        width: 100%;
+    }
+
     #ServerResources{
         padding-left: 10px;
         padding-top: 0;
     }
 }
 
-@media screen and (max-width: 320px){
+@media screen and (max-width: 330px){
     .ServerInfoWrapper{
         flex-direction: column;
     }
