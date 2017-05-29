@@ -22,3 +22,9 @@
         padding-top: 0;
     }
 }
+
+@media screen and (max-width: 320px){
+    .ServerInfoWrapper{
+        flex-direction: column;
+    }
+}

@@ -92,6 +92,7 @@ body{
     background-color: #fff;
     border: 3px #372A4D solid;
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: 10px;
 }
 
