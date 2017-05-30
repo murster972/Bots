@@ -3,7 +3,6 @@
         background-color: #502D90;
     }
 
-
     #title{
         height: 100%;
         text-align: center;
@@ -32,6 +31,10 @@
 
     .ItemContainer{
         width: 100%;
+    }
+
+    #ServerInfo{
+        padding-top: 12px;
     }
 
     #ServerResources{

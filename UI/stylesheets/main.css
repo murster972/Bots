@@ -8,6 +8,7 @@
     src: url("FiraSans-Regular.ttf");
 }
 
+
 *{
     padding: 0;
     margin: 0;
@@ -102,10 +103,18 @@ body{
     display: flex;
     flex-direction: column;
     padding-right: 5px;
+    padding-top: 0;
 }
 
 #ServerResources{
     padding-left: 5px;
+    padding-top: 0;
+    /*
+    Apply if extra items added to Server Info
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    */
 }
 
 .ServerInfoWrapper{
@@ -182,10 +191,13 @@ body{
 }
 
 .ResourceBar{
-    width: 70%;
     height: 100%;
     background-color: #372A4D;
     transition: .2s all;
+}
+
+#RAMResourceBar{
+    width: 70%;
 }
 
 #CPUResourceBar{
@@ -261,7 +273,7 @@ body{
 }
 
 #ClientsContainer{
-    background-color: #372A4D;
+    background-color: #502D90;
 }
 
 #ClientInfoContainer{
