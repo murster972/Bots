@@ -1,7 +1,16 @@
 @media screen and (max-width: 690px){
+    body{
+        background-color: #502D90;
+    }
+
+
     #title{
         height: 100%;
         text-align: center;
+    }
+
+    .titleTxtStyle{
+        color: #fff;
     }
 
     #main_container{
@@ -11,6 +20,10 @@
 
     #ServerInfoContentWrapper{
         flex-direction: column;
+    }
+
+    .ItemContainerWrapper.CommandInputWrapper{
+        padding-bottom: 0
     }
 
     .ServerInfoItem{
