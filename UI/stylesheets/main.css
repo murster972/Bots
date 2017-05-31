@@ -283,8 +283,7 @@ body{
 
 #ClientsContainer{
     background-color: #502D90;
-    padding: 10px;
-    padding-bottom: 40px;
+    padding: 30px;
     padding-left: 0;
     padding-right: 0;
 }
@@ -301,13 +300,60 @@ body{
 }
 
 #clientInfoTitle{
+    width: 100%;
     font-family: Pacifico;
     font-size: 50px;
     color: #fff;
+    background: #000;
+    text-align: center;
 }
 
-#ClientInfoWrapper{
+#ClientInfoWrapperContainer{
+    width: calc(100% - 6px);
+    height: auto;
+    border: 3px #000 solid;
+}
+
+.ClientInfoWrapper{
     width: 100%;
-    height: 500px;
-    border: 1px #fff solid;
+    height: auto;
+}
+
+.ClientInfoTitleBar{
+    width: 100%;
+    height: auto;
+    background: #fff;
+    font-family: FiraSans-Regular;
+    display: flex;
+    flex-wrap: wrap;
+    word-break: break-all;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px #000 solid;
+    cursor: pointer;
+}
+
+.ClientInfoTitleBar.bottom{
+    border: 0;
+}
+
+.ClientInfoTitleBar:hover, .ClientInfoTitleText{
+    background-color: #502D90;
+    color: #fff;
+}
+
+.ClientInfoTitleBar:hover .ClientInfoTitleText{
+    background-color: #502D90;
+    color: #fff;
+}
+
+.ClientInfoTitleText{
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+}
+
+.ClientInfoTitleResource{
+    height: auto;
+    padding: 10px;
 }

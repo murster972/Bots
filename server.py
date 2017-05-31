@@ -15,8 +15,9 @@ openssl req -x509 -sha512 -days 365 -nodes -newkey rsa:2048 -keyout key.key -out
 GB, Scotland, Glasgow, Bots, [blank], BotServer, [blank]
 """
 
+#TODO: Add ClientName to client, ID is default can be changed through web UI
 #TODO: Server should have to modes for clients, perm and temp, temp by default
-#TODO: Have server send resource info - Ram, cpu, temp etc.
+#TODO: Have server and client send resource info - Ram, cpu, temp etc.
 #      upload to DB and have UI read it
 #TODO: Tidy and Clean code up
 
