@@ -15,12 +15,11 @@ openssl req -x509 -sha512 -days 365 -nodes -newkey rsa:2048 -keyout key.key -out
 GB, Scotland, Glasgow, Bots, [blank], BotServer, [blank]
 """
 
+#TODO: Server should have to modes for clients, perm and temp, temp by default
 #TODO: Have server send resource info - Ram, cpu, temp etc.
 #      upload to DB and have UI read it
-
 #TODO: Tidy and Clean code up
 
-#NOTE: There's currently little to none error handling
 #NOTE: If cursor not getting updated rows, transaction isolation level in mysql DB needs to be changed to "read commited"
 #      with statement: SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
