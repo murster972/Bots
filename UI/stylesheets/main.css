@@ -159,6 +159,10 @@ body{
     color: #fff;
 }
 
+.ServerInfoText.Title.status, .ServerInfoText.Title.IP{
+    width: 91px;
+}
+
 .ServerInfoText.Title.status.online{
     background-color: #2ECC71;
     color: #fff;
@@ -182,6 +186,11 @@ body{
     font-family: FiraSans-Regular;
     color: #372A4D;
     text-align: left;
+    padding-top: 3px;
+}
+
+.ResourceName.top{
+    padding-top: 0;
 }
 
 .ResourceBarContainer{

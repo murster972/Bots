@@ -33,6 +33,10 @@
         width: 100%;
     }
 
+    .ResourceName{
+        padding-top: 0;
+    }
+
     #ServerInfo{
         padding-top: 12px;
     }
@@ -43,8 +47,12 @@
     }
 }
 
-@media screen and (max-width: 330px){
+@media screen and (max-width: 340px){
     .ServerInfoWrapper{
         flex-direction: column;
+    }
+
+    .ServerInfoText.Title.status, .ServerInfoText.Title.IP{
+        width: auto;
     }
 }
