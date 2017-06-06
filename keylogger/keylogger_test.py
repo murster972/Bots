@@ -14,10 +14,9 @@ NOTE: Read from /dev/input/event3
 values for timeval, type, code and value are located in /usr/include/linux/input-event-codes.h
 """
 
-#NOTE: Find way to have shift key applied to keys:
-#      Look for key release as well as key press, if shift not released before button press
-#      apply shift, if released before button press, don't apply shift.
-#NOTE: check if caps/num lock is on
+#TODO: Change value when there is shift combinatins, i.e 1 to !,
+#      also figure out how to do this over multiple keyboard layouts
+#TODO: Ensure works with different keyboard layouts, not just qwerty
 
 'Goes through /usr/include/linux/input-event-codes.h getting key codes'
 def parse_input_event_codes():

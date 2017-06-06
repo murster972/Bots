@@ -63,11 +63,20 @@ body{
     padding-bottom: 40px;
 }
 
+.ItemContainerWrapper.CommandInfoContainer{
+    justify-content: auto;
+}
+
+
 .ItemContainer{
     width: 800px;
     height: auto;
     display: flex;
     justify-content: center;
+}
+
+.ItemContainer.CommandInfo{
+    flex-direction: column;
 }
 
 #ServerInfoContainer{
@@ -356,4 +365,11 @@ body{
 .ClientInfoTitleResource{
     height: auto;
     padding: 10px;
+    font-size: 18px;
+}
+
+#CommandInfoTitle{
+    font-family: Pacifico;
+    font-size: 50px;
+    color: #502D90;
 }

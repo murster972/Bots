@@ -47,9 +47,13 @@
     }
 }
 
-@media screen and (max-width: 545px){
+@media screen and (max-width: 570px){
     .ClientInfoTitleBar{
-        width: 100%;
+        flex-direction: column;
+    }
+
+    .ClientInfoTitleText, .ClientInfoTitleResource{
+        width: calc(100% - 20px);
     }
 }
 
