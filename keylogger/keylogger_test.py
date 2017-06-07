@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 import struct
 import subprocess
+import Xlib.display
 import re
+
+import time
 
 """
 NOTE: Read from /dev/input/event3
@@ -64,8 +67,9 @@ def get_keyboard_layout():
 
 ' Gets process of the window currrently in focus '
 def get_focused_window():
+    #TODO: Look intro pytohn Xlib library
     pass
-
+    
 ' Changes key code values to ascii values, e.g. KEY_MINUS to -, dependant on the keyboard layout '
 def key_code_to_ascii():
     pass
@@ -118,4 +122,6 @@ def main():
 
 if __name__ == '__main__':
     #main()
-    print(get_keyboard_layout())
+    while True:
+        print(get_focused_window())
+        time.sleep(2)
