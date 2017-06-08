@@ -19,6 +19,8 @@ values for timeval, type, code and value are located in /usr/include/linux/input
 
 #TODO: Look into the xlib module for getting current window in focus
 
+#TODO: Find way to auto-detect the /dev/input/? event file for keyboard
+#TODO: Add combination for Fn keys
 #TODO: When recording keystrokes add date/time of keystrokes and also the application that
 #      is currrently in focus
 #TODO: Change value when there is shift combinatins, i.e 1 to !,
@@ -52,27 +54,30 @@ def parse_input_event_codes():
 
     return key_consts
 
+' Changes key code values to ascii values, e.g. KEY_MINUS to -, and adds combinations dependant on the keyboard layout '
+def key_code_to_ascii():
+    pass
+
 ' Gets current state of caps lock and nums lock keys '
 def get_capsnum_lock():
-    ps_res = subprocess.run(["xset", "-q"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    res_out = ps_res.stdout.decode()
+    res_out = run_process(["xset", "-q"])
     res = re.sub("[0123456789 ]", "", res_out).split("\n")[3].split(":")
     return [res[2], res[4]]
 
 ' Gets current keyboard layout, e.g UK, US, etc. '
 def get_keyboard_layout():
-    ps = subprocess.run(["setxkbmap", "-query"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    layout_line = ps.stdout.decode().split("\n")[2].replace(" ", "").split(":")
-    return layout_line[1].split(",")[0]
+    layout_line = run_process(["setxkbmap", "-query"]).split("\n")[2].split(":")
+    return layout_line[1].split(",")[0].strip()
 
 ' Gets process of the window currrently in focus '
 def get_focused_window():
-    #TODO: Look intro pytohn Xlib library
+    #TODO: Look into pytohn Xlib library
     pass
-    
-' Changes key code values to ascii values, e.g. KEY_MINUS to -, dependant on the keyboard layout '
-def key_code_to_ascii():
-    pass
+
+' Runs and returns process output '
+def run_process(command):
+    ps = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return ps.stdout.decode() if ps.stdout else ps.stderr.decode()
 
 def main():
     form = "llHHI"
@@ -122,6 +127,4 @@ def main():
 
 if __name__ == '__main__':
     #main()
-    while True:
-        print(get_focused_window())
-        time.sleep(2)
+    print(get_keyboard_layout())

@@ -13,6 +13,22 @@ NOTE: Read from /dev/input/event3
     }
 values for timeval, type, code and value are located in /usr/include/linux/input-event-codes.h
 """
-#TODO: Change value when there is shift combinatins, i.e 1 to !,
-#      also figure out how to do this over multiple keyboard layouts
-#TODO: Ensure works with different keyboard layouts, not just qwerty
+
+class Keylogger:
+    def __init__(self):
+        pass
+
+    def parse_input_event_codes(self):
+        pass
+
+    def key_code_to_ascii(self):
+        pass
+
+    def get_capsnum_lock(self):
+        pass
+
+    def get_keyboard_layout(self):
+        pass
+
+    def get_focused_window(self):
+        pass
