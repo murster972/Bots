@@ -64,20 +64,25 @@ def parse_input_event_codes():
 def set_combinations():
     comb_vals = {}
 
-    #EXAMPLE:
-    #ascii_values[c]["multiple"] = {}
-    #ascii_values[c]["multiple"]["gb"] = ")"
-
     #num key combinations
-    gb_num_chars = ')!"£$%^&*('
-    us_num_chars = ')!@#$%^&*('
+    gb_num_chars_combs = ')!"£$%^&*('
+    us_num_chars_combs = ')!@#$%^&*('
 
     for i in range(10):
-        comb_vals[i] = {}
-        comb_vals[i]["GB"] = gb_num_chars[i]
-        comb_vals[i]["US"] = us_num_chars[i]
+        comb_vals[i] = {"GB": gb_num_chars_combs[i]}
+        comb_vals[i]["US"] = us_num_chars_combs[i]
 
-    
+    #NOTE: key_code_values are US as "input-event-codes.h" is US
+    key_code_values = ["MINUS", "EQUAL", "LEFTBRACE", "RIGHTBRACE", "SEMICOLON", "APOSTROPHE", "BACKSLASH", "COMMA", "DOT", "SLASH", "102ND", "GRAVE"]
+    gb_combs = "_+{}:@~<>?|¬"
+    us_combs = '_+{}:"|<>?>~'
+
+    for i in key_code_values:
+        comb_vals[i] = {"GB": gb_combs[i]}
+        comb_vals[i]["US"] = us_combs[i]
+
+    return comb_vals
+
 
 ' Gets current state of caps lock and nums lock keys '
 def get_capsnum_lock():
@@ -175,5 +180,5 @@ def main():
     finally:f.close()
 
 if __name__ == '__main__':
-    #main()
-    set_combinations()
+    main()
+    #set_combinations()
