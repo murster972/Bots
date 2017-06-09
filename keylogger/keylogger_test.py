@@ -42,6 +42,7 @@ def parse_input_event_codes():
 
     key_consts = {}
 
+    #TODO: Have alph and numb chars be modified from KEY_A to A before being added to const dict
     #parse data obtaining intial key-codes
     for line in f_data:
         if line[:11] != "#define KEY" and line[:11] != "#define BTN": continue
@@ -59,9 +60,24 @@ def parse_input_event_codes():
 
     return key_consts
 
-' Changes key code values to ascii values, e.g. KEY_MINUS to -, and adds combinations dependant on the keyboard layout '
-def key_code_to_ascii():
-    pass
+' Sets combinaion values for keys based on keyboard layout, currently on GB and US '
+def set_combinations():
+    comb_vals = {}
+
+    #EXAMPLE:
+    #ascii_values[c]["multiple"] = {}
+    #ascii_values[c]["multiple"]["gb"] = ")"
+
+    #num key combinations
+    gb_num_chars = ')!"£$%^&*('
+    us_num_chars = ')!@#$%^&*('
+
+    for i in range(10):
+        comb_vals[i] = {}
+        comb_vals[i]["GB"] = gb_num_chars[i]
+        comb_vals[i]["US"] = us_num_chars[i]
+
+    
 
 ' Gets current state of caps lock and nums lock keys '
 def get_capsnum_lock():
@@ -160,6 +176,4 @@ def main():
 
 if __name__ == '__main__':
     #main()
-    while True:
-        print(get_focused_window())
-        time.sleep(5)
+    set_combinations()
