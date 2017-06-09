@@ -4,7 +4,7 @@ import subprocess
 import re
 
 """
-NOTE: Read from /dev/input/event3
+NOTE: Read from /dev/input/*
     struct input_event {
       struct timeval time;
       unsigned short type;

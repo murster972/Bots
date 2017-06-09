@@ -74,7 +74,6 @@ def get_keyboard_layout():
     :output window_name: name of window in focus
     :output process_name: name of process for window in focus'''
 def get_focused_window():
-    #TODO: Figure out how to find the process of the window in focus
     #BUG: Certain applications returning None for wm_name
 
     #connects to default display
@@ -87,7 +86,6 @@ def get_focused_window():
     if not w_name: w_name = w.get_wm_name()
     if not w_class: w_class = w.get_wm_class()
 
-    #w_class = "{}:{}".format(w_class[0], w_class[1])
     return (w_name, w_class)
 
 ' Gets the device located at /dev/input/ that corresponds to the keyboard'
