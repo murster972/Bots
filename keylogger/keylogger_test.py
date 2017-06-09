@@ -3,6 +3,7 @@ import struct
 import subprocess
 import Xlib.display
 import re
+import sys
 
 import time
 
@@ -30,7 +31,12 @@ values for timeval, type, code and value are located in /usr/include/linux/input
 
 'Goes through input-event-codes.h getting key codes'
 def parse_input_event_codes():
-    f = open("/usr/include/linux/input-event-codes.h", "r")
+    try:
+        f = open("input-event-codes.h", "r")
+    except Exception as err:
+        print("The following error occured trying to read input-event-codes file: {}".format(err))
+        sys.exit(-1)
+
     f_data = f.readlines()
     f.close()
 
