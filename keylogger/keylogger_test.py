@@ -21,11 +21,9 @@ values for timeval, type, code and value are located in /usr/include/linux/input
 #TODO: Look into the xlib module for getting current window in focus
 
 #TODO: Add combination for Fn keys
+#TODO: Only show alph, num, comb and other ascii chars, dont show LFTARROW, LFTSHIFT etc.
 #TODO: When recording keystrokes add date/time of keystrokes and also the application that
 #      is currrently in focus
-#TODO: Change value when there is shift combinatins, i.e 1 to !,
-#      also figure out how to do this over multiple keyboard layouts
-#TODO: Ensure works with different keyboard layouts, not just qwerty
 
 #NOTE: 'input-event-codes' are american layout
 
@@ -42,8 +40,6 @@ def parse_input_event_codes():
 
     key_consts = {}
 
-    #TODO: Have alph and numb chars be modified from KEY_A to A before being added to const dict
-    #parse data obtaining intial key-codes
     for line in f_data:
         if line[:11] != "#define KEY" and line[:11] != "#define BTN": continue
 
@@ -51,6 +47,9 @@ def parse_input_event_codes():
         const = re.sub(r"#define |[\n()]", "", line).replace("\t", " ").split(" ")
         const = [x for x in const if x]
         value, code = const[0], const[1]
+
+        #removes 'KEY_' that precedes actual value, A, MINUS, 0, etc.
+        if value[:3] == "KEY": value = value[4:]
 
         #converts code to int, leaves ref consts as strings ad it cant convert it to same value as another
         #constant because values are used as dict keys
@@ -82,7 +81,6 @@ def set_combinations():
         comb_vals[i]["US"] = us_combs[i]
 
     return comb_vals
-
 
 ' Gets current state of caps lock and nums lock keys '
 def get_capsnum_lock():
