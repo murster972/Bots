@@ -8,6 +8,7 @@ from random import getrandbits
 
 #TODO: Setup basic of server, e.g. have it listening and connecting to clients
 #TODO: do normal connection first, tls later
+#TODO: lock up locking variables used between threads
 
 class Server:
     clients = {}
