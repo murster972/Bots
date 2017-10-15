@@ -9,6 +9,7 @@ from random import getrandbits
 #TODO: Setup basic of server, e.g. have it listening and connecting to clients
 #TODO: do normal connection first, tls later
 #TODO: lock up locking variables used between threads
+#TODO: write class for printing colour instead of passing colours as args to format
 
 class Server:
     clients = {}
@@ -22,7 +23,7 @@ class Server:
     addr = ""
 
     #code sent to clients to end connection
-    kill_code = getrandbits(32)
+    # kill_code = getrandbits(32)
 
     BUFF_SIZE = 1024
 
@@ -40,23 +41,9 @@ class Server:
             sock_created = True
 
             #start client listener
-            #listen = Thread(target=ClientHandler, daemon=True)
-            #listen.start()
-
-            menu = {"1": "", "2": "", "3": "", "4": lambda: sys.exit(0)}
-
-            while True:
-                try:
-                    os.system("clear")
-                    print(Colours.white + "[1] - Show Clients\n[2] - Send command\n[3] - View Results\n[4] - exit")
-                    opt = input("Option: ")
-
-                    menu[opt]()
-
-                except KeyError:
-                    print("\n{}[x] {}Invalid option: {}{}".format(Colours.red, Colours.white, Colours.blue, opt))
-                    pause = input("\n" + Colours.blue + "Enter to continue...")
-
+            # listen = Thread(target=ClientHandler, daemon=False)
+            # listen.start()
+            ClientHandler()
 
         except ValueError:
             print("{}[x] Server Error: Invalid address{}".format(Colours.red, Colours.white))
@@ -75,7 +62,7 @@ class Server:
     ''' Listens for clients connecting to the server and passes them off to the client handler method '''
     def client_listner(self):
         while True:
-            c_sock, c_addr = self.server_sock.listen()
+            c_sock, c_addr = self.sock.listen()
             ID = getrandbits(32)
 
             #on the very very small off chance that an ID occurs twice
@@ -90,22 +77,23 @@ class ClientHandler(Server):
     def __init__(self):
         #listens for clients
         while True:
-            print("{}[+]{} Server listening at for clients at: {}".format(Colours.green, Colours.white, Server.addr))
-            c_sock, c_addr = Server.server_sock.listen()
-            c_sock.send(kill_code.encode())
+            print("{}\n[+]{} Server listening for clients at: {}".format(Colours.green, Colours.white, Server.addr))
+            c_sock, c_addr = Server.sock.accept()
 
             try:
                 #recv client info - hostname, ip, addr as tuple
-                c_info = eval(c_sock.recv(Server.BUFF_SIZE).decode())
+                #c_info = eval(c_sock.recv(Server.BUFF_SIZE).decode())
+                c_ip, c_port = c_sock.getpeername()
+                c_name = c_sock.gethostname()
+                print(c_ip, c_port, c_name)
 
-            except Exception:
-                print("{}[-]{} Error occured while recieving client information: {}".format(Colours.red, Colours.white, c_info))
-                c_sock.send(kill_code.encode())
+            except Exception as err:
+                print("{}[-]{} Error occured while recieving client information: {}{}".format(Colours.red, Colours.white, Colours.blue, Colours.white, err))
 
-            self.c_id = randbits(32)
+            self.c_id = getrandbits(32)
 
             #for the very small chance of a repeat id
-            while self.c_id in Server.clients: self.c_id = randbits(32)
+            while self.c_id in Server.clients: self.c_id = getrandbits(32)
 
             #{"client": (hostname, ip_addr, port)}
             Server.clients[self.c_id] = ()
