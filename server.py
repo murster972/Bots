@@ -11,6 +11,8 @@ from random import getrandbits
 #TODO: lock up locking variables used between threads
 #TODO: write class for printing colour instead of passing colours as args to format
 
+#NOTE: have a single instance of db connecter created before start and then kpass it to both server and server-side for u
+
 class Server:
     clients = {}
 
@@ -59,57 +61,47 @@ class Server:
                 Server.sock.close()
                 print("\n{}[*] {}Server closed".format(Colours.blue, Colours.white))
 
-    ''' Listens for clients connecting to the server and passes them off to the client handler method '''
-    def client_listner(self):
-        while True:
-            c_sock, c_addr = self.sock.listen()
-            ID = getrandbits(32)
-
-            #on the very very small off chance that an ID occurs twice
-            while ID in Server.clients: ID = getrandbits(32)
-
-            Server.client[ID] = {"sock": c_sock, "addr": c_addr}
-            Server.command_queue[ID] = []
-            new_client = Thread(target=Client, args=[ID], daemon=True)
-
 ''' Listens for new clients, recieves and sends messages from clients '''
 class ClientHandler(Server):
     def __init__(self):
+        print("{}[*]{} Server listening for clients at: {}".format(Colours.blue, Colours.white, Server.addr))
+
         #listens for clients
         while True:
-            print("{}\n[+]{} Server listening for clients at: {}".format(Colours.green, Colours.white, Server.addr))
             c_sock, c_addr = Server.sock.accept()
 
             try:
-                #recv client info - hostname, ip, addr as tuple
-                #c_info = eval(c_sock.recv(Server.BUFF_SIZE).decode())
                 c_ip, c_port = c_sock.getpeername()
-                c_name = c_sock.gethostname()
-                print(c_ip, c_port, c_name)
+                c_name = c_sock.recv(Server.BUFF_SIZE).decode()
 
             except Exception as err:
-                print("{}[-]{} Error occured while recieving client information: {}{}".format(Colours.red, Colours.white, Colours.blue, Colours.white, err))
+                print("{}[-]{} Error occured while getting client information: {}{}".format(Colours.red, Colours.white, Colours.blue, err))
+                continue
 
             self.c_id = getrandbits(32)
 
             #for the very small chance of a repeat id
             while self.c_id in Server.clients: self.c_id = getrandbits(32)
 
-            #{"client": (hostname, ip_addr, port)}
-            Server.clients[self.c_id] = ()
+            Server.clients[self.c_id] = (c_sock, c_ip, c_port, c_name)
+
+            print("{}[+]{} Client connected with: ID {}, IP {}, Port {}, Hostname {}".format(Colours.green, Colours.white, self.c_id, c_ip, c_port, c_name))
 
             #recieve messages
 
             #send messages
 
-    def recieve(self):
+            #alive thread - check client alive every 5 seconds
+
+            #NOTE: have alive thread sperate or mixed in with recieve or send thread?
+
+    def recieve(self, id):
         pass
 
-    def send(self):
+    def send(self, id):
         while True:
             if command_queue[self.client_id]:
                 pass
-
 
 if __name__ == '__main__':
     Server()

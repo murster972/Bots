@@ -15,6 +15,7 @@ class Colours:
     white = "\033[1;37;1m"
 
     #prints messages in colours based on there type
+    #NOTE: change to sub-classes
     msg = {"info": lambda info: print(Colours.blue + "[*] " + Colours.white + info),
            "err": lambda title, err: print(Colours.red + "[!] " + title + Colours.white + err),
            "conn": lambda ID, addr: print(Colours.green + "[+] " + Colours.white + "Client " + Colours.blue + ID + Colours.white + " connected: "  + addr),
