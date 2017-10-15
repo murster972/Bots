@@ -30,6 +30,9 @@ class Client:
             while True:
                 cmd = self.c_sock.recv(1024).decode()
 
+                #alive check from server
+                if cmd == "\0": continue
+
 
         except ValueError:
             print("{}[-] {}Invalid server address".format(Colours.red, Colours.white))
