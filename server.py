@@ -42,10 +42,7 @@ class Server:
 
             sock_created = True
 
-            #start client listener
-            # listen = Thread(target=ClientHandler, daemon=False)
-            # listen.start()
-            ClientHandler()
+            self.client_handler()
 
         except ValueError:
             print("{}[x] Server Error: Invalid address{}".format(Colours.red, Colours.white))
@@ -61,93 +58,66 @@ class Server:
                 Server.sock.close()
                 print("\n{}[*] {}Server closed".format(Colours.blue, Colours.white))
 
-''' Listens for new clients, recieves and sends messages from clients '''
-class ClientHandler(Server):
-
-    #TODO: sperate into a sperate client sub-class!!!!!!!!
-
-    def __init__(self):
+    def client_handler(self):
         print("{}[*]{} Server listening for clients at: {}".format(Colours.blue, Colours.white, Server.addr))
 
-        #listens for clients
         while True:
             c_sock, c_addr = Server.sock.accept()
 
-            try:
-                c_ip, c_port = c_sock.getpeername()
-                c_name = c_sock.recv(Server.BUFF_SIZE).decode()
-
-            except Exception as err:
-                print("{}[-]{} Error occured while getting client information: {}{}".format(Colours.red, Colours.white, Colours.blue, err))
-                continue
-
-            c_id = getrandbits(32)
-
-            #for the very small chance of a repeat id
-            while c_id in Server.clients: c_id = getrandbits(32)
-
-            #last item in tuple indicates if client is alive
-            Server.clients[c_id] = [c_sock, c_ip, c_port, c_name, True]
-            Server.command_queue[c_id] = {}
-
-            print("{}[+]{} Client connected with: ID {}, IP {}, Port {}, Hostname {}".format(Colours.green, Colours.white, c_id, c_ip, c_port, c_name))
-
-            #recieve messages
-
-            #NOTE: have alive thread sperate or mixed in with recieve or send thread?
-            #alive thread - check client alive every 5 seconds
-            alive = Thread(target=self.is_alive, args=[c_id], daemon=True)
-            alive.start()
-
-            #send messages
-            self.send(c_id)
-
-    def recieve(self, c_id):
-        pass
-
-    def send(self, c_id):
-        while Server.clients[c_id][-1]:
-            if Server.command_queue[c_id]:
-                pass
-            time.sleep(100)
-
-    def is_alive(self, c_id):
-        try:
-            while Server.clients[c_id][-1]:
-                Server.clients[c_id][0].send("\0".encode())
-                time.sleep(5)
-
-        except socket.error:
-            #client closed connection
-            self.client_remove(c_id)
-
-    def client_remove(self, c_id):
-        Server.clients[c_id][-1] = False
-
-        #enough time for other threads to start a new loop and see client isnt alive
-        time.sleep(12)
-
-        del Server.clients[c_id]
-        del Server.command_queue[c_id]
-
-        print("{}[-]{} Client {} disconnected".format(Colours.red, Colours.white, c_id))
+            c = Thread(target=Client, args=[c_sock, c_addr], daemon=True)
+            c.start()
 
 'Instance of a client'
-class Client(ClientHandler):
-    def __init__(self, c_id):
-        self.c_id = c_id
+class Client(Server):
+    def __init__(self, sock, ip):
+        self.c_id = getrandbits(32)
+        self.sock = sock
+
+        #on the very small chance c_id repeats
+        while self.c_id in Server.clients: self.c_id = getrandbits(32)
+
+        c_ip, c_port = sock.getpeername()
+        c_name = sock.recv(Server.BUFF_SIZE).decode()
+        self.c_alive = True
+
+        Server.clients[self.c_id] = [self.sock, c_ip, c_port, c_name, self.c_alive]
+        Server.command_queue[self.c_id] = {}
+
+        print("{}[+] {}Client connnected:{} ID {}, IP {}, Port {}, Name {},".format(Colours.green, Colours.blue, Colours.white, self.c_id, c_ip, c_port, c_name))
+
+        send = Thread(target=self.send, daemon=True)
+        send.start()
+
+        recv = Thread(target=self.recieve, daemon=True)
+        recv.start()
+
+        #is_alive called last and not as seperate thread so client doesnt stop running
+        #untill after its infos been removed from server
+        self.is_alive()
 
     def send(self):
-        pass
+        while self.c_alive:
+            pass
 
     def recieve(self):
         pass
 
-    def alive(self):
-        pass
+    def is_alive(self):
+        try:
+            while True:
+                self.sock.send("\0".encode())
+                time.sleep(5)
+        except socket.error:
+            self.disconnected()
 
     def disconnected(self):
-        pass
+        self.c_alive = False
+
+        print("{}[-] {}Client {}{}{} disconnected".format(Colours.red, Colours.white, Colours.blue, self.c_id, Colours.white))
+
+        #enough time for send and recieve threads to have seen clients disconnected
+        del Server.clients[self.c_id]
+        del Server.command_queue[self.c_id]
 
 if __name__ == '__main__':
     Server()
