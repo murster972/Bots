@@ -102,6 +102,7 @@ class Client(Server):
     def recieve(self):
         pass
 
+    #NOTE: Should server being send to client or client sending to server for keep-alive?
     def is_alive(self):
         try:
             while True:
