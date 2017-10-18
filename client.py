@@ -31,7 +31,7 @@ class Client:
             self.alive_count = 0
             self.server_alive = True
 
-            alive = Thread(target=self.alive_timer(), daemon=True)
+            alive = Thread(target=self.alive_timer, daemon=True)
             alive.start()
 
             #listen for cmds from server
@@ -41,7 +41,6 @@ class Client:
                 #alive check from server
                 if cmd == "\0": self.alive_count += 1
 
-
         except ValueError:
             print("{}[-] {}Invalid server address".format(Colours.red, Colours.white))
             sys.exit(-1)
@@ -50,7 +49,8 @@ class Client:
         except BrokenPipeError:
             print("{}[*]{} Server closed".format(Colours.blue, Colours.white))
         except socket.error as err:
-            print("{}[-]{} The folling error occured: {}".format(Colours.red, Colours.white, err))
+            if not self.server_alive: print("{}[*] {}Unexpectedly disconnected from server".format(Colours.blue, Colours.white))
+            else: print("{}[-]{} The folling error occured: {}".format(Colours.red, Colours.white, err))
         except KeyboardInterrupt:
             pass
         finally:
@@ -61,9 +61,13 @@ class Client:
     def alive_timer(self):
         while True:
             prev = self.alive_count
-            time.sleep(7)
-            if prev == self.alive_count: raise BrokenPipeError()
+            time.sleep(5)
+            if prev == self.alive_count:
+                self.server_alive = False
+                self.c_sock.close()
 
+    def execute_command(self, cmd):
+        pass
 
 if __name__ == '__main__':
     Client()

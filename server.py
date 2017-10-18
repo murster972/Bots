@@ -11,6 +11,8 @@ from random import getrandbits
 #TODO: lock up locking variables used between threads
 #TODO: write class for printing colour instead of passing colours as args to format
 
+#NOTE: no-sql options, e.g. JSON, instead of databases?
+
 #NOTE: have a single instance of db connecter created before start and then kpass it to both server and server-side for u
 
 class Server:
@@ -37,6 +39,7 @@ class Server:
             #create server socket and binds to address
             Server.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             Server.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
             Server.sock.bind(Server.addr)
             Server.sock.listen(5)
 
