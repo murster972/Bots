@@ -79,14 +79,16 @@ class Client(Server):
         #on the very small chance c_id repeats
         while self.c_id in Server.clients: self.c_id = getrandbits(32)
 
+        #get basic info from client - ip, port, hostname
         c_ip, c_port = sock.getpeername()
-        c_name = sock.recv(Server.BUFF_SIZE).decode()
+        #c_name = sock.recv(Server.BUFF_SIZE).decode()
+        c_name, c_mac = eval(sock.recv(Server.BUFF_SIZE).decode())
         self.c_alive = True
 
         Server.clients[self.c_id] = [self.sock, c_ip, c_port, c_name, self.c_alive]
         Server.command_queue[self.c_id] = {}
 
-        print("{}[+] {}Client connnected:{} ID {}, IP {}, Port {}, Name {},".format(Colours.green, Colours.blue, Colours.white, self.c_id, c_ip, c_port, c_name))
+        print("{}[+] {}Client connnected:{} ID {}, IP: {}:{}, Name {}, MAC: {}".format(Colours.green, Colours.blue, Colours.white, self.c_id, c_ip, c_port, c_name, c_mac))
 
         send = Thread(target=self.send, daemon=True)
         send.start()

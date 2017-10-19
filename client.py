@@ -4,6 +4,7 @@ import socket
 from colours import Colours
 from threading import Thread
 import time
+import subprocess
 
 #TODO: Setup basic of client, e.g. have it connecting to server and listenging for messages from server
 
@@ -23,10 +24,9 @@ class Client:
 
             #NOTE: split __init__ up into small methods?
 
-            print(socket.gethostname())
-
             #send hostname to client
-            self.c_sock.send(socket.gethostname().encode())
+            mac, name = self.get_mac(), socket.gethostname()
+            self.c_sock.send("('{}','{}')".format(name, mac).encode())
 
             self.alive_count = 0
             self.server_alive = True
@@ -68,6 +68,23 @@ class Client:
 
     def execute_command(self, cmd):
         pass
+
+    ''' Returns MAC Address of client machine with '''
+    def get_mac(self):
+        cur_ip = self.c_sock.getsockname()[0]
+
+        if cur_ip == "127.0.0.1" or cur_ip == "": return "N/A"
+
+        interfaces = subprocess.getoutput("ifconfig").split("\n\n")
+        cur_int = ""
+
+        for i in interfaces:
+            if cur_ip in i:
+                cur_int = [x for x in i.split(" ") if x]
+                break
+
+        mac = "N/A" if not cur_int else cur_int[4]
+        return mac
 
 if __name__ == '__main__':
     Client()
