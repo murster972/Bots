@@ -78,6 +78,9 @@ class Client:
         interfaces = subprocess.getoutput("ifconfig").split("\n\n")
         cur_int = ""
 
+        #NOTE: Doesnt work, my assumptions about ifconfig output being the same
+        #      for each version was incorrect
+        #TODO: change so it finds mac address regardless of layout of output
         for i in interfaces:
             if cur_ip in i:
                 cur_int = [x for x in i.split(" ") if x]
