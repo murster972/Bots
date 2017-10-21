@@ -17,10 +17,6 @@ class Client:
         try:
             created = False
 
-            self.get_mac()
-
-            exit()
-
             server_addr = (input("Server IP: "), int(input("Server Port: ")))
 
             self.c_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
