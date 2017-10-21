@@ -5,13 +5,21 @@ from colours import Colours
 from threading import Thread
 import time
 import subprocess
+import re
 
 #TODO: Setup basic of client, e.g. have it connecting to server and listenging for messages from server
+
+
+#NOTE: If unable to connect check firewall rules...
 
 class Client:
     def __init__(self):
         try:
             created = False
+
+            self.get_mac()
+
+            exit()
 
             server_addr = (input("Server IP: "), int(input("Server Port: ")))
 
@@ -71,7 +79,8 @@ class Client:
 
     ''' Returns MAC Address of client machine with '''
     def get_mac(self):
-        cur_ip = self.c_sock.getsockname()[0]
+        #cur_ip = self.c_sock.getsockname()[0]
+        cur_ip = "10.216.71.197"
 
         if cur_ip == "127.0.0.1" or cur_ip == "": return "N/A"
 
@@ -83,10 +92,19 @@ class Client:
         #TODO: change so it finds mac address regardless of layout of output
         for i in interfaces:
             if cur_ip in i:
-                cur_int = [x for x in i.split(" ") if x]
+                cur_int = [x for j in i.split("\n") for x in j.split(" ") if x]
                 break
 
-        mac = "N/A" if not cur_int else cur_int[4]
+        #primitive regex to check for mac: [A-Fa-f0-9]{2,2}[:][A-Fa-f0-9]{2,2}[:][A-Fa-f0-9]{2,2}[:][A-Fa-f0-9]{2,2}[:][A-Fa-f0-9]{2,2}[:][A-Fa-f0-9]{2,2}$
+        #cleaner regex for mac check: ([A-Fa-f0-9]{2,2}[:]){5,5}[A-Fa-f0-9]{2,2}$
+        #                             [A-Fa-f0-9]{2,2}[:] - checks for pairs of hex ending in ':'
+        #                             (...){5,5} - repeats '[A-Fa-f0-9]{2,2}[:]' 5 times, i.e. onlyy returns a match if 5 hex pairs ending with ':'
+        #                             [A-Fa-f0-9]{2,2}$ - find last hex pair at end
+        for i in cur_int:
+            r = re.search(r'([A-Fa-f0-9]{2,2}[:]){5,5}[A-Fa-f0-9]{2,2}$', i)
+            if r: break
+
+        mac = "N/A" if not r else r.group()
         return mac
 
 if __name__ == '__main__':
